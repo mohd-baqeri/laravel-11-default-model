@@ -9,6 +9,7 @@ Full CRUD functions for Laravel 11 using Query Builder:
   The code example in a controller:
   
     private $model;
+    
     public function __construct()
     {
         $this->model = new DefaultModel();
