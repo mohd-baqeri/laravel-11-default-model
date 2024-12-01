@@ -6,6 +6,23 @@ INSTALLATION:
 
 Full CRUD functions for Laravel 11 using Query Builder:
 
+  The code example in a controller:
+  
+    private $model;
+    public function __construct()
+    {
+        $this->model = new DefaultModel();
+    }
+
+    public function index()
+    {
+        $data = [
+          'firstname' => 'Mohammad', // Your input data
+          'lastname' => 'Baqeri', // Your input data
+        ];
+        $id = $this->model->addRow('users', $data);
+    }
+
 By the following functions, you can do whatever can be done by a model:
 
      * addRow($tbl, $data)
