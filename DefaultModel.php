@@ -64,6 +64,7 @@ class DefaultModel extends Model
         // update the updated_at COLLUMN for specifying the 'delete time'
         if ($status == 'update') {
             $query = DB::table($tbl);
+
             foreach ($where as $where_collumn => $where_value) {
                 $where_collumns = explode(' ', $where_collumn);
                 if (count($where_collumns) == 2)
@@ -71,6 +72,7 @@ class DefaultModel extends Model
                 else
                     $query->where($where_collumn, $where_value);
             }
+
             $query->update([
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
@@ -80,6 +82,7 @@ class DefaultModel extends Model
         // move the row to another table,
         if ($status == 'move') {
             $selectQuery = DB::table($tbl);
+
             foreach ($where as $where_collumn => $where_value) {
                 $where_collumns = explode(' ', $where_collumn);
                 if (count($where_collumns) == 2)
@@ -87,8 +90,8 @@ class DefaultModel extends Model
                 else
                     $selectQuery->where($where_collumn, $where_value);
             }
-            $selectQuery->toRawSql();
-            DB::insert("INSERT INTO " . $tbl . "_deleted " . $selectQuery);
+
+            DB::insert("INSERT INTO " . $tbl . "_deleted " . $selectQuery->toRawSql());
             return 'inserted'; // get the last inserted id
         }
 
