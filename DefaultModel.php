@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DefaultModel extends Model
 {
@@ -46,9 +46,15 @@ class DefaultModel extends Model
     // updateRow
     public function updateRow($tbl, $data, $where = [])
     {
-        $affected = DB::table($tbl)
-            ->where($where)
-            ->update($data);
+        $affected = DB::table($tbl);
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $affected->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $affected->where($where_collumn, $where_value);
+        }
+        $affected->update($data);
         return $affected;
     }
 
@@ -57,26 +63,46 @@ class DefaultModel extends Model
     {
         // update the updated_at COLLUMN for specifying the 'delete time'
         if ($status == 'update') {
-            DB::table($tbl)
-                ->where($where)
-                ->update([
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
+            $query = DB::table($tbl);
+            foreach ($where as $where_collumn => $where_value) {
+                $where_collumns = explode(' ', $where_collumn);
+                if (count($where_collumns) == 2)
+                    $query->where($where_collumns[0], $where_collumns[1], $where_value);
+                else
+                    $query->where($where_collumn, $where_value);
+            }
+            $query->update([
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
             return 'updated';
         }
 
         // move the row to another table,
         if ($status == 'move') {
-            $selectQuery = DB::table($tbl)
-                ->where($where)
-                ->toRawSql();
+            $selectQuery = DB::table($tbl);
+            foreach ($where as $where_collumn => $where_value) {
+                $where_collumns = explode(' ', $where_collumn);
+                if (count($where_collumns) == 2)
+                    $selectQuery->where($where_collumns[0], $where_collumns[1], $where_value);
+                else
+                    $selectQuery->where($where_collumn, $where_value);
+            }
+            $selectQuery->toRawSql();
             DB::insert("INSERT INTO " . $tbl . "_deleted " . $selectQuery);
             return 'inserted'; // get the last inserted id
         }
 
         // and then delete it
         if ($status == 'delete') {
-            DB::table($tbl)->where($where)->delete();
+            $query = DB::table($tbl);
+            foreach ($where as $where_collumn => $where_value) {
+                $where_collumns = explode(' ', $where_collumn);
+                if (count($where_collumns) == 2)
+                    $query->where($where_collumns[0], $where_collumns[1], $where_value);
+                else
+                    $query->where($where_collumn, $where_value);
+            }
+            $query->delete();
             return 'deleted';
         }
     }
@@ -84,7 +110,15 @@ class DefaultModel extends Model
     // getRows
     public function getRows($tbl, $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $ordered = explode(' ', $orderBy);
         count($ordered) > 1
@@ -106,7 +140,15 @@ class DefaultModel extends Model
     // getRowsIn
     public function getRowsIn($tbl, $whereInCol, $whereInVal, $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         is_array($whereInVal)
             ? $query->whereIn($whereInCol, $whereInVal)
@@ -132,7 +174,15 @@ class DefaultModel extends Model
     // getRowsInSearch
     public function getRowsInSearch($tbl, $whereInCol, $whereInVal, $like = [], $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -162,7 +212,15 @@ class DefaultModel extends Model
     // getRowsNotIn
     public function getRowsNotIn($tbl, $whereNotInCol, $whereNotInVal, $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         is_array($whereNotInVal)
             ? $query->whereNotIn($whereNotInCol, $whereNotInVal)
@@ -188,7 +246,15 @@ class DefaultModel extends Model
     // getRowsNotInSearch
     public function getRowsNotInSearch($tbl, $whereNotInCol, $whereNotInVal, $like = [], $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -218,7 +284,15 @@ class DefaultModel extends Model
     // getRowsJoin
     public function getRowsJoin($tbl1, $tbl2, $onClause, $select = '*', $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl1)->select($select)->where($where);
+        $query = DB::table($tbl1)->select($select);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $onClauses = explode('=', $onClause);
 
@@ -244,7 +318,15 @@ class DefaultModel extends Model
     // getRowsSearch
     public function getRowsSearch($tbl, $like = [], $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -270,7 +352,15 @@ class DefaultModel extends Model
     // getRowSearch
     public function getRowSearch($tbl, $like = [], $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -296,7 +386,15 @@ class DefaultModel extends Model
     // getRowsSearchJoin
     public function getRowsSearchJoin($tbl1, $tbl2, $onClause, $select = '*', $like = [], $where = [], $orderBy = 'id ASC', $limit = false, $offset = false)
     {
-        $query = DB::table($tbl1)->select($select)->where($where);
+        $query = DB::table($tbl1)->select($select);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -326,7 +424,15 @@ class DefaultModel extends Model
     // getDistinctRows // search about distinct
     public function getDistinctRows($tbl, $distinct_col, $where = [], $orderBy = NULL, $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->distinct($distinct_col)->where($where);
+        $query = DB::table($tbl)->distinct($distinct_col);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $ordered = explode(' ', $orderBy);
         count($ordered) > 1
@@ -348,7 +454,15 @@ class DefaultModel extends Model
     // getDistinctRowsSearch
     public function getDistinctRowsSearch($tbl, $distinct_col, $like = [], $where = [], $orderBy = NULL, $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->distinct($distinct_col)->where($where);
+        $query = DB::table($tbl)->distinct($distinct_col);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -374,7 +488,15 @@ class DefaultModel extends Model
     // getRow
     public function getRow($tbl, $where = [], $orderBy = NULL)
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $ordered = explode(' ', $orderBy);
         count($ordered) > 1
@@ -389,8 +511,15 @@ class DefaultModel extends Model
     // getRowIn
     public function getRowIn($tbl, $whereInCol, $whereInVal, $where = [])
     {
-        $query = DB::table($tbl)
-            ->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         is_array($whereInVal)
             ? $query->whereIn($whereInCol, $whereInVal)
@@ -402,8 +531,15 @@ class DefaultModel extends Model
     // getRowNotIn
     public function getRowNotIn($tbl, $whereNotInCol, $whereNotInVal, $where = [])
     {
-        $query = DB::table($tbl)
-            ->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         is_array($whereNotInVal)
             ? $query->whereNotIn($whereNotInCol, $whereNotInVal)
@@ -415,10 +551,18 @@ class DefaultModel extends Model
     // getNextRow
     public function getNextRow($tbl, $current_col_name, $current_col_val, $where = [])
     {
-        $query = DB::table($tbl)
-            ->where($where)
-            ->where($current_col_name, '>', $current_col_val)
-            ->orderBy($current_col_name, 'ASC');
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
+
+        $query->where($current_col_name, '>', $current_col_val);
+        $query->orderBy($current_col_name, 'ASC');
 
         return $query->first();
     }
@@ -426,8 +570,15 @@ class DefaultModel extends Model
     // getNextRows
     public function getNextRows($tbl, $current_col_name, $current_col_val, $where = [], $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)
-            ->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         if (strpos($current_col_name, ' ')) {
             $current_col_name_arr = explode(' ', $current_col_name);
@@ -451,10 +602,18 @@ class DefaultModel extends Model
     // getPrevRow
     public function getPrevRow($tbl, $current_col_name, $current_col_val, $where = [])
     {
-        $query = DB::table($tbl)
-            ->where($where)
-            ->where($current_col_name, '<', $current_col_val)
-            ->orderBy($current_col_name, 'DESC');
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
+
+        $query->where($current_col_name, '<', $current_col_val);
+        $query->orderBy($current_col_name, 'DESC');
 
         return $query->first();
     }
@@ -462,8 +621,15 @@ class DefaultModel extends Model
     // getPrevRows
     public function getPrevRows($tbl, $current_col_name, $current_col_val, $where = [], $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)
-            ->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         if (strpos($current_col_name, ' ')) {
             $current_col_name_arr = explode(' ', $current_col_name);
@@ -487,7 +653,15 @@ class DefaultModel extends Model
     // getFirstRow
     public function getFirstRow($tbl, $where = [], $orderBy = 'id ASC')
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $ordered = explode(' ', $orderBy);
         count($ordered) > 1
@@ -504,7 +678,15 @@ class DefaultModel extends Model
     // getLastRow
     public function getLastRow($tbl, $where = [], $orderBy = 'id DESC')
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $ordered = explode(' ', $orderBy);
         count($ordered) > 1
@@ -521,7 +703,16 @@ class DefaultModel extends Model
     // getRowMath
     public function getRowMath($tbl, $math = 'SUM', $col = 'id', $where = [])
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
+
         if ($math == 'AVG')
             return $query->avg($col);
         if ($math == 'COUNT')
@@ -537,7 +728,15 @@ class DefaultModel extends Model
     // getRowMathSearch
     public function getRowMathSearch($tbl, $math = 'SUM', $col = 'id', $like = [], $where = [])
     {
-        $query = DB::table($tbl)->where($where);
+        $query = DB::table($tbl);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         foreach ($like as $like_column => $like_value) {
             $query->whereLike($like_column, $like_value);
@@ -558,7 +757,15 @@ class DefaultModel extends Model
     // getRowJoin
     public function getRowJoin($tbl1, $tbl2, $onClause, $select = '*', $where = [], $orderBy = '')
     {
-        $query = DB::table($tbl1)->select($select)->where($where);
+        $query = DB::table($tbl1)->select($select);
+
+        foreach ($where as $where_collumn => $where_value) {
+            $where_collumns = explode(' ', $where_collumn);
+            if (count($where_collumns) == 2)
+                $query->where($where_collumns[0], $where_collumns[1], $where_value);
+            else
+                $query->where($where_collumn, $where_value);
+        }
 
         $onClauses = explode('=', $onClause);
 
