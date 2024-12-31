@@ -123,12 +123,23 @@ class DefaultModel extends Model
                 $query->where($where_collumn, $where_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -157,12 +168,23 @@ class DefaultModel extends Model
             ? $query->whereIn($whereInCol, $whereInVal)
             : $query->whereIn($whereInCol, [$whereInVal]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -195,12 +217,23 @@ class DefaultModel extends Model
             ? $query->whereIn($whereInCol, $whereInVal)
             : $query->whereIn($whereInCol, [$whereInVal]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -229,12 +262,23 @@ class DefaultModel extends Model
             ? $query->whereNotIn($whereNotInCol, $whereNotInVal)
             : $query->whereNotIn($whereNotInCol, [$whereNotInVal]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -267,12 +311,23 @@ class DefaultModel extends Model
             ? $query->whereNotIn($whereNotInCol, $whereNotInVal)
             : $query->whereNotIn($whereNotInCol, [$whereNotInVal]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -301,12 +356,23 @@ class DefaultModel extends Model
 
         $query->join($tbl2, $onClauses[0], '=', $onClauses[1]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -335,12 +401,23 @@ class DefaultModel extends Model
             $query->whereLike($like_column, $like_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -369,12 +446,23 @@ class DefaultModel extends Model
             $query->whereLike($like_column, $like_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -407,12 +495,23 @@ class DefaultModel extends Model
 
         $query->join($tbl2, $onClauses[0], '=', $onClauses[1]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -437,12 +536,23 @@ class DefaultModel extends Model
                 $query->where($where_collumn, $where_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -471,12 +581,23 @@ class DefaultModel extends Model
             $query->whereLike($like_column, $like_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         if ($limit && !$offset)
             $query->limit($limit);
@@ -501,12 +622,23 @@ class DefaultModel extends Model
                 $query->where($where_collumn, $where_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         return $query->first();
     }
@@ -666,12 +798,23 @@ class DefaultModel extends Model
                 $query->where($where_collumn, $where_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         $query->limit(1);
 
@@ -691,12 +834,23 @@ class DefaultModel extends Model
                 $query->where($where_collumn, $where_value);
         }
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         $query->limit(1);
 
@@ -774,12 +928,23 @@ class DefaultModel extends Model
 
         $query->join($tbl2, $onClauses[0], '=', $onClauses[1]);
 
-        $ordered = explode(' ', $orderBy);
-        count($ordered) > 1
-            ? $query->orderBy($ordered[0], $ordered[1])
-            : ($orderBy
-                ? $query->orderBy($ordered[0])
-                : '');
+        if (is_array($orderBy)) {
+            foreach ($orderBy as $orderByItem) {
+                $ordered = explode(' ', $orderByItem);
+                count($ordered) > 1
+                    ? $query->orderBy($ordered[0], $ordered[1])
+                    : ($orderByItem
+                        ? $query->orderBy($ordered[0])
+                        : '');
+            }
+        } else {
+            $ordered = explode(' ', $orderBy);
+            count($ordered) > 1
+                ? $query->orderBy($ordered[0], $ordered[1])
+                : ($orderBy
+                    ? $query->orderBy($ordered[0])
+                    : '');
+        }
 
         return $query->first();
     }
