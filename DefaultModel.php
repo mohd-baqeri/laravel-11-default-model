@@ -523,10 +523,10 @@ class DefaultModel extends Model
         return $query->get();
     }
 
-    // getDistinctRows // search about distinct
+    // getDistinctRows
     public function getDistinctRows($tbl, $distinct_col, $where = [], $orderBy = NULL, $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->distinct($distinct_col);
+        $query = DB::table($tbl)->distinct($distinct_col)->select($distinct_col);
 
         foreach ($where as $where_collumn => $where_value) {
             $where_collumns = explode(' ', $where_collumn);
@@ -567,7 +567,7 @@ class DefaultModel extends Model
     // getDistinctRowsSearch
     public function getDistinctRowsSearch($tbl, $distinct_col, $like = [], $where = [], $orderBy = NULL, $limit = false, $offset = false)
     {
-        $query = DB::table($tbl)->distinct($distinct_col);
+        $query = DB::table($tbl)->distinct($distinct_col)->select($distinct_col);
 
         foreach ($where as $where_collumn => $where_value) {
             $where_collumns = explode(' ', $where_collumn);
