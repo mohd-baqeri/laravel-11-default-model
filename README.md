@@ -1,10 +1,10 @@
-# laravel-11-default-model
-A MUST model for Laravel 11 projects.
+# laravel-default-model
+A MUST model for Laravel projects.
 
 INSTALLATION:
   Just download the file "DefaultModel.php" and put it in your Laravel project's "Models" directory.
 
-Full CRUD functions for Laravel 11 using Query Builder.
+Full CRUD functions for Laravel using Query Builder.
 
   The code example in a controller:
   
